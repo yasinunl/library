@@ -1,0 +1,11 @@
+ @Query("SELECT p FROM Product p WHERE " +
+            "p.name LIKE CONCAT('%',:query, '%')" +
+            "Or p.description LIKE CONCAT('%', :query, '%')")
+
+
+    @GetMapping("/search")
+     public ResponseEntity<List<Product>> searchProducts(@RequestParam("query") String query){
+         return ResponseEntity.ok(productService.searchProducts(query));
+     }
+https://www.geeksforgeeks.org/java-program-to-implement-the-string-search-algorithm-for-short-text-sizes/
+
