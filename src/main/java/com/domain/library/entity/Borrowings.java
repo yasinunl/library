@@ -1,5 +1,7 @@
 package com.domain.library.entity;
 
+import com.domain.library.dto.UserDTO;
+import com.domain.library.security.entity.User;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
@@ -32,6 +34,10 @@ public class Borrowings {
     @JoinColumn(name = "books_id")
     @JsonIgnoreProperties("borrowings")
     private Books books;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("borrowings")
+    private UserDTO user;
 
     public Borrowings() {
     }
@@ -76,6 +82,14 @@ public class Borrowings {
         this.books = books;
     }
 
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Borrowings{" +
@@ -84,6 +98,7 @@ public class Borrowings {
                 ", returnDate=" + returnDate +
                 ", student=" + student +
                 ", books=" + books +
+                ", user=" + user +
                 '}';
     }
 }

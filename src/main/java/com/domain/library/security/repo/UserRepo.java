@@ -1,5 +1,6 @@
 package com.domain.library.security.repo;
 
+import com.domain.library.dto.UserDTO;
 import com.domain.library.security.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

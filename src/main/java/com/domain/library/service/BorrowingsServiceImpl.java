@@ -1,5 +1,6 @@
 package com.domain.library.service;
 
+import com.domain.library.dto.UserDTO;
 import com.domain.library.entity.Books;
 import com.domain.library.entity.Borrowings;
 import com.domain.library.entity.Students;
@@ -8,6 +9,11 @@ import com.domain.library.exception.CustomSuccessException;
 import com.domain.library.repository.BookRepository;
 import com.domain.library.repository.BorrowingsRepository;
 import com.domain.library.repository.StudentRepository;
+import com.domain.library.repository.UserDTORepo;
+import com.domain.library.security.entity.User;
+import com.domain.library.security.repo.UserRepo;
+import com.domain.library.security.service.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +26,17 @@ public class BorrowingsServiceImpl implements BorrowingsService{
     BorrowingsRepository borrowingsRepository;
     BookRepository bookRepository;
     StudentRepository studentRepository;
+    JwtService jwtService;
+    UserDTORepo userRepo;
 
     @Autowired
-    public BorrowingsServiceImpl(BorrowingsRepository borrowingsRepository, BookRepository bookRepository, StudentRepository studentRepository) {
+    public BorrowingsServiceImpl(BorrowingsRepository borrowingsRepository, BookRepository bookRepository,
+                                 StudentRepository studentRepository, JwtService jwtService, UserDTORepo userRepo) {
         this.borrowingsRepository = borrowingsRepository;
         this.bookRepository = bookRepository;
         this.studentRepository = studentRepository;
+        this.jwtService = jwtService;
+        this.userRepo = userRepo;
     }
 
 
@@ -36,7 +47,13 @@ public class BorrowingsServiceImpl implements BorrowingsService{
     }
 
     @Override
-    public Borrowings addBorrowing(Borrowings borrowing) {
+    public Borrowings addBorrowing(Borrowings borrowing, HttpServletRequest request) {
+        final String header = request.getHeader("Authorization");
+        String token = header.substring(7);
+        String email = jwtService.extractEmail(token);
+        Optional<UserDTO> theUser =  userRepo.findByEmail(email);
+        UserDTO user;
+        if (theUser.isPresent()) user = theUser.get(); else throw new RuntimeException("The user is not found");
         Optional<Books> theBook = bookRepository.findById(borrowing.getBooks().getId());
         Books book;
         if(theBook.isPresent()){
@@ -59,6 +76,8 @@ public class BorrowingsServiceImpl implements BorrowingsService{
             returnDate.setMonth(returnDate.getMonth() + 2);
             borrowing.setReturnDate(returnDate);
         }
+        borrowing.setUser(user);
+        System.out.println(borrowing);
         return borrowingsRepository.save(borrowing);
     }
 

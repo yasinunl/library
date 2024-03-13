@@ -2,7 +2,9 @@ package com.domain.library.controller;
 
 import com.domain.library.entity.Borrowings;
 import com.domain.library.service.BorrowingsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class BorrowingsController {
         return borrowingsService.getById(id);
     }
     @PostMapping
-    public Borrowings addBorrowing(@RequestBody Borrowings borrowing){
-        return borrowingsService.addBorrowing(borrowing);
+    public Borrowings addBorrowing(@RequestBody Borrowings borrowing, @NonNull HttpServletRequest request){
+        return borrowingsService.addBorrowing(borrowing, request);
     }
     @DeleteMapping("/{id}")
     public Borrowings deleteBorrowing(@PathVariable int id){
