@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT).hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
                         .requestMatchers(HttpMethod.POST).hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
                         .requestMatchers(HttpMethod.DELETE, "/books/delete-all/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/students/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE).hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

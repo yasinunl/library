@@ -1,5 +1,6 @@
 package com.domain.library.security.auth;
 
+import com.domain.library.security.entity.Token;
 import com.domain.library.security.entity.User;
 import com.domain.library.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody User user){
+    public Token register(@RequestBody User user){
         return authenticationService.register(user);
     }
     @PostMapping("/login")
-    public String login(@RequestBody User user){
+    public Token login(@RequestBody User user){
         return authenticationService.login(user);
     }
 }
