@@ -17,4 +17,5 @@ public interface BookService {
     List<Books> searchBook(String query);
     List<Books> findOnlyBooks();
     List<BooksDTO> pageableBooks(Pageable pageable);
+    Integer pageCount();
 }

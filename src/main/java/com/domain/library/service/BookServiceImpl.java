@@ -42,8 +42,13 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<BooksDTO> pageableBooks(Pageable pageable) {
         if(pageable.getPageSize() == 20)
-            pageable = PageRequest.of(pageable.getPageNumber(), 1000);
+            pageable = PageRequest.of(pageable.getPageNumber(), 2);
         return bookPageableRepository.findAll(pageable).toList();
+    }
+
+    @Override
+    public Integer pageCount() {
+        return bookRepository.countBooks() - 1;
     }
 
 

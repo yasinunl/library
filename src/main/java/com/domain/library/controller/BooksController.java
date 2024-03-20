@@ -70,4 +70,8 @@ public class BooksController {
         System.out.println("Query--> " + queryTimer);
         return book;
     }
+    @GetMapping("/count")
+    public Integer pageCount(){
+        return bookService.pageCount();
+    }
 }

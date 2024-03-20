@@ -17,4 +17,7 @@ public interface BookRepository extends JpaRepository<Books, Integer>, BookRepos
             "WHERE MATCH (book_title, book_author, publisher, year_of_publication) AGAINST (:query'*'  IN BOOLEAN MODE)",
             nativeQuery = true)
     List<Books> searchBook(@Param("query") String query);*/
+    @Query(nativeQuery = true,
+            value = "select ceil(count(*) / 2) from books")
+    Integer countBooks();
 }
